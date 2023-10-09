@@ -23,7 +23,8 @@ while IFS=',' read -r Id prenom nom password role; do
         fi
         # creation de l'utilisateur , avec con groupe par défaut , et mot de passe chiffré en MD5
         useradd -m -s /bin/bash "$username" -c "$nom $prenom" -u $Id -p "$(echo "$password" | openssl passwd -1 -stdin)"
-        echo "Création Utilisateur $username avec mot de passe : $password" >> /var/log/accessrights.log
+        chage -d 0 "$username"
+	echo "Création Utilisateur $username avec mot de passe : $password" >> /var/log/accessrights.log
 
         # Ajoutez l'utilisateur au groupe sudo si le rôle est "Admin"
         if [ "$role" == "Admin" ]; then
